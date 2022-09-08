@@ -1,0 +1,30 @@
+{
+  "name": "tsutils",
+  "version": "0.0.1",
+  "description": "Some utilities for TypeScript",
+  "scripts": {
+    "dev": "tsdx watch",
+    "build": "tsdx build",
+    "test": "tsdx test",
+    "lint": "tsdx lint",
+    "prepare": "tsdx build"
+  },
+  "keywords": [
+    "typescript",
+    "utils"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nullndr/tsutils.git"
+  },
+  "bugs": {
+    "url": "https://github.com/nullndr/tsutils/issues"
+  },
+  "homepage": "https://github.com/nullndr/tsutils#readme",
+  "author": "Andrea Foletto",
+  "license": "MIT",
+  "dependencies": {
+    "tsdx": "^0.14.1",
+    "typescript": "^4.8.2"
+  }
+}
