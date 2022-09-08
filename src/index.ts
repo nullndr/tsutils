@@ -82,7 +82,7 @@ export type RemovePropsOf<S extends object, T> = {
  * Used to overwrite all `T` properties that exists in `U` with the properties in `U`
  */
 export type Overwrite<T extends object, U extends object> = {
-  [K in keyof T as K]: K extends keyof U ? U[K] : T[K];
+  [K in keyof T]: K extends keyof U ? U[K] : T[K];
 };
 
 /**
