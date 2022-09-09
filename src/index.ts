@@ -1,3 +1,9 @@
+//
+//
+//  Type utilities
+//
+//
+
 /**
  * Used for custom compilation error
  */
@@ -48,12 +54,11 @@ export type Head<T extends any[]> = T extends [infer H, ...unknown[]]
  * let tail: Tail<[string, number, boolean]> = [1, true];
  * ```
  */
-export type Tail<T extends any[]> = ((..._: T) => void) extends (
-  _: any,
-  ...rest: infer R
-) => void
-  ? R extends []
-    ? never
+export type Tail<T extends any[]> = T extends [infer R]
+  ? R
+  : ((..._: T) => void) extends (_: any, ...r: infer R) => void
+  ? R extends [infer E]
+    ? E
     : R
   : never;
 
@@ -99,9 +104,11 @@ export type Difference<T, U> = T extends U
   : T;
 
 /**
- * Used to retrieve the same values from two unions
+ * Used to retrieve the same properties of two objects
  */
-export type Filter<T, U> = T extends U ? T : never;
+export type Filter<T extends object, U extends object> = {
+  [K in keyof T as K extends keyof SimmetricDifference<T, U> ? never : K]: T[K];
+};
 
 /**
  * Used to flat the array type
@@ -109,17 +116,17 @@ export type Filter<T, U> = T extends U ? T : never;
 export type Flat<T> = T extends Array<infer E> ? E : T;
 
 /**
- * Used to get an array where each element is a key of the type
+ * Retrieve an array where each element is a key of the object
  */
 export type Entries<T extends object> = { [K in keyof T]: K }[keyof T][];
 
 /**
- * Used to get an array where elemenets are the types of the keys
+ * Retrieve an array where elements are the types of the keys
  */
 export type EntriesType<T extends object> = { [K in keyof T]: T[K] }[keyof T][];
 
 /**
- * Used to get an array where each element is a tuple with the key and the type of the key
+ * Retrieve an array where each element is a tuple with the key and the type of the key
  */
 export type EntriesWithType<T extends object> = {
   [K in keyof T]: [K, T[K]];
@@ -128,13 +135,15 @@ export type EntriesWithType<T extends object> = {
 /**
  * Used to retrieve the simmetric difference of two objects
  */
-export type SimmetricDifference<T, U> = T extends object
-  ? U extends object
-    ? {
-        [K in keyof T as K extends keyof U ? never : K]: T[K];
-      } & { [K in keyof U as K extends keyof T ? never : K]: U[K] }
-    : never
-  : never;
+export type SimmetricDifference<T extends object, U extends object> = {
+  [K in keyof T as K extends keyof U ? never : K]: T[K];
+} & { [K in keyof U as K extends keyof T ? never : K]: U[K] };
+
+//
+//
+//  Function utilities
+//
+//
 
 type MessageOption = {
   message: string;
