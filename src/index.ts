@@ -20,19 +20,18 @@ export type CompError<E extends string> = Readonly<{ [k in E]: void }>;
 export type Brand<T, U> = T & { __brand: U };
 
 /**
- * USed to create an union between two sets
+ * USed to create an union between two types
  */
 export type Union<T, U> = T | U;
 
 /**
- * Used to create an intersection between two objects
+ * Used to create an intersection between two types
  */
-export type Intersection<T, U> = T & U;
-
-/**
- * Used to create an intersection between two set, it is just a wrapper for `Extract`
- */
-export type SetIntersection<T, U> = Extract<T, U>;
+export type Intersection<T, U> = T extends object
+  ? U extends object
+    ? T & U
+    : never
+  : Extract<T, U>;
 
 /**
  * Used to retrieve the type of the first element in an array or in a tuple
@@ -43,9 +42,11 @@ export type SetIntersection<T, U> = Extract<T, U>;
  * let n: Head<number[]>; // number
  * ```
  */
-export type Head<T extends any[]> = T extends [infer H, ...unknown[]]
+export type Head<T> = T extends [infer E]
+  ? E
+  : T extends [infer H, ...unknown[]]
   ? H
-  : never;
+  : T;
 
 /**
  * Used to retrieve the tuple tail
@@ -54,13 +55,15 @@ export type Head<T extends any[]> = T extends [infer H, ...unknown[]]
  * let tail: Tail<[string, number, boolean]> = [1, true];
  * ```
  */
-export type Tail<T extends any[]> = T extends [infer R]
-  ? R
-  : ((..._: T) => void) extends (_: any, ...r: infer R) => void
-  ? R extends [infer E]
-    ? E
-    : R
-  : never;
+export type Tail<T> = T extends [infer E]
+  ? E
+  : T extends any[]
+  ? ((..._: T) => void) extends (_: any, ...r: infer P) => void
+    ? P extends [infer E]
+      ? E
+      : P
+    : T
+  : T;
 
 /**
  * Used to create an array from a `T` type
