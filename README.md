@@ -12,7 +12,7 @@ This packages contains some `type`s and function utilities for TypeScript.
     - [`Tail<T>`]()
     - [`ToArray<T>`]()
     - [`ToUnion<T>`]()
-    - [`RemovePropsOf`S, T>`]()
+    - [`RemovePropsOf<S, T>`]()
     - [`Overwrite<T, U>`]()
     - [`Difference<T, U>`]()
     - [`Filter<T, U>`]()
