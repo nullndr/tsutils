@@ -1,5 +1,5 @@
 {
-  "name": "tsutils",
+  "name": "@nullndr/tsutils",
   "version": "0.0.1",
   "description": "Some utilities for TypeScript",
   "scripts": {
@@ -30,6 +30,7 @@
     "tsd-lite": "^0.6.0",
     "typescript": "^4.8.3"
   },
+  "types": "./lib/index.d.ts",
   "files": [
     "!test",
     "!*.js"
