@@ -17,6 +17,7 @@ This packages contains some `type`s and function utilities for TypeScript.
     - [`Difference<T, U>`]()
     - [`Filter<T, U>`]()
     - [`Flat<T>`]()
+    - [`DeepFlat<T>`]()
     - [`Entries<T>`]()
     - [`EntriesType<T>`]()
     - [`EntriesWithType<T>`]()
@@ -162,16 +163,45 @@ This type creates an array type from a given type:
 let a: ToArray<number> = [0, 1, 2, 3, 4];
 ```
 
+Its behavior is the opposit of [`Flat<T>`](#flat)
+
 ## RemovePropsOf
 
 ```ts
 import type { RemovePropsOf } from "@nullndr/tsutils";
 ```
 
+This type removes from an object all properties that are of a specific type.
+
+```ts
+type Foo = {
+    foo: number;
+    foobar: number;
+    bar: string;
+}
+
+let r: RemovePropsOf<Foo, number> = { bar: "Hello" };
+```
+
 ## Overwrite
 
 ```ts
 import type { Overwrite } from "@nullndr/tsutils";
+```
+
+This type overwrites all properties of an source object which exist in a target object with the properties in the target object.
+
+```ts
+type Foo = {
+    foo: number;
+    bar: string;
+}
+
+type Bar = {
+    foo: string;
+}
+
+let o: Overwrite<Foo, Bar> = { foo: "Hello", bar: "World" };
 ```
 
 ## Difference
@@ -190,6 +220,27 @@ import type { Filter } from "@nullndr/tsutils";
 
 ```ts
 import type { Flat } from "@nullndr/tsutils";
+```
+
+This type flats an array.
+
+```ts
+let f: Flat<string[]> = "Hello";
+```
+
+Its behavior is the opposit of [`ToArray<T>`](#toarray)
+
+## DeepFlat
+
+```ts
+import type { DeepFlat } from "@nullndr/tsutils";
+```
+
+Like [`Flat<T>`](#flat) but recursively flats the result.
+
+
+```ts
+let f: DeepFlat<string[][][][]> = "Hello";
 ```
 
 ## Entries
@@ -214,6 +265,37 @@ import type { EntriesWithType } from "@nullndr/tsutils";
 
 ```ts
 import type { SimmetricDifference } from "@nullndr/tsutils";
+```
+
+This type extracts the simmetric difference of two objects.
+
+```ts
+type Foo = {
+    foo: number;
+    foobar: string;
+};
+
+type Bar = {
+    bar: number;
+    foobar: string;
+};
+
+let s: SimmetricDifference<Foo, Bar> = { foo: 1, bar: 1};
+```
+
+To get the simmetric difference of two unions, you can use `Exclude<T, U>` united with `Exclude<U, T>`.
+
+```ts
+type Foo = 1 | 2 | 3 
+
+type Bar = 2 | 4
+
+type S = Exclude<Foo, Bar> | Exclude<Bar, Foo>
+
+let a: S = 1; // ok
+a = 2; // error
+a = 3; // ok
+a = 4; // ok
 ```
 
 # Functions

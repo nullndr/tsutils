@@ -119,6 +119,11 @@ export type Filter<T extends object, U extends object> = {
 export type Flat<T> = T extends Array<infer E> ? E : T;
 
 /**
+ * Like `Flat` but recursively flat the result
+ */
+export type DeepFlat<T> = T extends Array<infer E> ? DeepFlat<E> : T;
+
+/**
  * Retrieve an array where each element is a key of the object
  */
 export type Entries<T extends object> = { [K in keyof T]: K }[keyof T][];
