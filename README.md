@@ -146,7 +146,7 @@ let s: ToUnion<string[]> = "Hello";
 With a tuple, `ToUnion` creates an union with each element type inside the tuple:
 
 ```ts
-let s: ToUnion<[string, number, boolean]> = "Hello";
+let s: ToUnion<[string, number, boolean]> = "Hello"; // string | number | boolean
 s = 1;
 s = true;
 ```
@@ -163,7 +163,7 @@ This type creates an array type from a given type:
 let a: ToArray<number> = [0, 1, 2, 3, 4];
 ```
 
-Its behavior is the opposit of [`Flat<T>`](#flat)
+Its behavior is the opposit of [`Flat<T>`](#flat).
 
 ## RemovePropsOf
 
@@ -305,6 +305,18 @@ a = 4; // ok
 ```ts
 import { assertDefined } from "@nullndr/tsutils";
 ```
+
+This function asserts that a given value is not `null` or `undefined`.
+
+```ts
+const user: User | null = await findUser(id);
+
+assertDefined(user);
+
+console.log(user.firstName);
+```
+
+The function throws an 'AssertFail` error if the value is `null` or `undefined`.
 
 ## assertNever
 
