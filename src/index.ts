@@ -71,7 +71,7 @@ export type Tail<T> = T extends [infer E]
 export type ToArray<T> = T[];
 
 /**
- * Used to create an union from array or tuple
+ * Used to create an union from a tuple
  *
  * ```ts
  * let u: ToUnion<[1, 2, 3]>; // 1 | 2 | 3
@@ -105,6 +105,13 @@ export type Difference<T, U> = T extends U
       }
     : never
   : T;
+
+/**
+ * Unwraps the "awaited type" of the return type of a function type
+ */
+export type AwaitedRetunType<T extends (...args: any[]) => any> = Awaited<
+  ReturnType<T>
+>;
 
 /**
  * Used to retrieve the same properties of two objects

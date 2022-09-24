@@ -5,28 +5,29 @@ This packages contains some `type`s and function utilities for TypeScript.
 
 1. types
     - [`CompErr<E>`](#comperr)
-    - [`Brand<T, U>`]()
-    - [`Union<T, U>`]()
-    - [`Intersection<T, U>`]()
-    - [`Head<T>`]()
-    - [`Tail<T>`]()
-    - [`ToArray<T>`]()
-    - [`ToUnion<T>`]()
-    - [`RemovePropsOf< S, T>`]()
-    - [`Overwrite<T, U>`]()
-    - [`Difference<T, U>`]()
-    - [`Filter<T, U>`]()
-    - [`Flat<T>`]()
-    - [`DeepFlat<T>`]()
-    - [`Entries<T>`]()
-    - [`EntriesType<T>`]()
-    - [`EntriesWithType<T>`]()
-    - [`SimmetricDifference<T>`]()
+    - [`Brand<T, U>`](#brand)
+    - [`Union<T, U>`](#union)
+    - [`Intersection<T, U>`](#intersetion)
+    - [`Head<T>`](#head)
+    - [`Tail<T>`](#tail)
+    - [`ToArray<T>`](#toarray)
+    - [`ToUnion<T>`](#tounion)
+    - [`RemovePropsOf< S, T>`](#removepropsof)
+    - [`Overwrite<T, U>`](#overwrite)
+    - [`Difference<T, U>`](#difference)
+    - [`AwaitedReturnType<T>`](#awaitedreturntype)
+    - [`Filter<T, U>`](#filter)
+    - [`Flat<T>`](#flat)
+    - [`DeepFlat<T>`](#deepflat)
+    - [`Entries<T>`](#entries)
+    - [`EntriesType<T>`](#entriestype)
+    - [`EntriesWithType<T>`](#entrieswithtype)
+    - [`SimmetricDifference<T>`](#simmetricdifference)
 
 2. functions
-    - [`assertDefined`]()
-    - [`assertNever`]()
-    - [`assert`]()
+    - [`assertDefined`](#assertdefined)
+    - [`assertNever`](#assertnever)
+    - [`assert`](#assert)
 
 # Types
 
@@ -208,6 +209,20 @@ let o: Overwrite<Foo, Bar> = { foo: "Hello", bar: "World" };
 
 ```ts
 import type { Difference } from "@nullndr/tsutils";
+```
+
+## AwaitedReturnType
+
+```ts
+import type { AwaitedReturnType } from "@nullndr/tsutils";
+```
+
+This type unwraps the awaited type of the return type of a function type.
+
+```ts
+async function foo(): Promise<number>;
+
+let a: AwaitedReturnType<typeof foo> = 2;
 ```
 
 ## Filter
