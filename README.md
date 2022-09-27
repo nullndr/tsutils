@@ -10,18 +10,19 @@ This packages contains some `type`s and function utilities for TypeScript.
     - [`Intersection<T, U>`](#intersetion)
     - [`Head<T>`](#head)
     - [`Tail<T>`](#tail)
+    - [`IfAny<T, Then, Else>`](#ifany)
+    - [`IsAny<T>`](#isany)
+    - [`XOR<T, U>`](#xor)
     - [`ToArray<T>`](#toarray)
     - [`ToUnion<T>`](#tounion)
-    - [`RemovePropsOf< S, T>`](#removepropsof)
+    - [`RemovePropsOf<S, T>`](#removepropsof)
     - [`Overwrite<T, U>`](#overwrite)
     - [`Difference<T, U>`](#difference)
     - [`AwaitedReturnType<T>`](#awaitedreturntype)
     - [`Filter<T, U>`](#filter)
     - [`Flat<T>`](#flat)
     - [`DeepFlat<T>`](#deepflat)
-    - [`Entries<T>`](#entries)
-    - [`EntriesType<T>`](#entriestype)
-    - [`EntriesWithType<T>`](#entrieswithtype)
+    - [`Values<T>`](#values)
     - [`SimmetricDifference<T>`](#simmetricdifference)
 
 2. functions
@@ -50,8 +51,8 @@ type Cat = { name: string };
 type Dog = { name: string };
 
 const petCat = (cat: Cat) => { console.log(cat.name); };
-const fido: Dog = { name: "fido" };
-petCat(fido); // works fine
+const pluto: Dog = { name: "Pluto" };
+petCat(pluto); // works fine
 ```
 
 In same case, you would like to simulate _nominal typing_ inside TypeScript.
@@ -130,6 +131,67 @@ This type extracts the tail type of a tuple:
 type Tuple = [string, boolean, number];
 
 let t: Tail<Tuple> = [true, 0];
+```
+
+## IfAny
+
+```ts
+import type { IfAny } from "@nullndr/tsutils";
+```
+
+With `A`, `B` and `C` types, assign `B` is `A` is `any`, `C` otherwise.
+
+```ts
+let a: IfAny<any, number, string> = 1;
+let b: IfAny<number, number, string> = "Hello";
+```
+
+## IsAny
+
+```ts
+import type { IsAny } from "@nullndr/tsutils";
+```
+
+Like [`IfAny`](#ifany) but returns `true` if the type is `any`, `false` otherwise, usefull inside other types.
+
+## XOR
+
+```ts
+import type { XOR } from "@nullndr/tsutils";
+```
+
+TypeScript's type system is _structural_, meaning that any two types that are structurally equivalent are considered the same.
+
+This can lead to some unpleasant cases:
+
+```ts
+type A = {
+    a: 1;
+};
+
+type B = {
+    b: 2;
+};
+
+type C = A | B;
+
+let a: C = { a: 1, b: 2 }; // works fine
+```
+
+This because `{ a: 1, b: 2}` can be assigned both at `A` and `B`, in order to get really mutually exclusive use `XOR`:
+
+```ts
+type A = {
+    a: 1;
+};
+
+type B = {
+    b: 2;
+};
+
+let a: XOR<A, B> = { a: 1, b: 2 }; // error
+a = { a: 1 }; // ok
+a = { b: 2 }; // ok
 ```
 
 ## ToUnion
@@ -258,23 +320,27 @@ Like [`Flat<T>`](#flat) but recursively flats the result.
 let f: DeepFlat<string[][][][]> = "Hello";
 ```
 
-## Entries
+## Values
 
 ```ts
-import type { Entries } from "@nullndr/tsutils";
+import type { Values } from "@nullndr/tsutils";
 ```
 
-## EntriesType
+Retrives a union of all property values in an object.
 
 ```ts
-import type { EntriesType } from "@nullndr/tsutils";
+type Foo = {
+    a: string;
+    b: 1;
+    c: 2;
+};
+
+let v: Values<Foo> = "Hello"; // Ok
+v = 1; // ok
+v = 2; // ok
+v = 3; // error
 ```
 
-## EntriesWithType
-
-```ts
-import type { EntriesWithType } from "@nullndr/tsutils";
-```
 
 ## SimmetricDifference
 

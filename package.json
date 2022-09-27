@@ -1,6 +1,6 @@
 {
   "name": "@nullndr/tsutils",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Some utilities for TypeScript",
   "scripts": {
     "dev": "npx tsc --watch",

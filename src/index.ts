@@ -66,6 +66,18 @@ export type Tail<T> = T extends [infer E]
   : T;
 
 /**
+ * `any` is the only type that can let you equate `0` with `1`.
+ *
+ * See https://stackoverflow.com/a/49928360/1490091
+ */
+export type IfAny<T, Then, Else> = 0 extends 1 & T ? Then : Else;
+
+/**
+ * Check if the type is `any`, if true returns `true`, otherwise `false`
+ */
+export type IsAny<Data> = IfAny<Data, true, false>;
+
+/**
  * Used to create an array from a `T` type
  */
 export type ToArray<T> = T[];
@@ -113,6 +125,22 @@ export type AwaitedRetunType<T extends (...args: any[]) => any> = Awaited<
   ReturnType<T>
 >;
 
+type _OneOf<T extends {}> = Values<{
+  [K in keyof T]: T[K] & {
+    [K in Values<{ [L in keyof Omit<T, K>]: keyof T[L] }>]?: undefined;
+  };
+}>;
+
+/**
+ * XOR is needed to have a real mutually exclusive union type
+ * https://stackoverflow.com/questions/42123407/does-typescript-support-mutually-exclusive-types
+ */
+export type XOR<T, U> = T | U extends object
+  ?
+      | ({ [P in Exclude<keyof T, keyof U>]?: never } & U)
+      | ({ [P in Exclude<keyof U, keyof T>]?: never } & T)
+  : T | U;
+
 /**
  * Used to retrieve the same properties of two objects
  */
@@ -131,21 +159,9 @@ export type Flat<T> = T extends Array<infer E> ? E : T;
 export type DeepFlat<T> = T extends Array<infer E> ? DeepFlat<E> : T;
 
 /**
- * Retrieve an array where each element is a key of the object
+ * Returns an union of all the values in T
  */
-export type Entries<T extends object> = { [K in keyof T]: K }[keyof T][];
-
-/**
- * Retrieve an array where elements are the types of the keys
- */
-export type EntriesType<T extends object> = { [K in keyof T]: T[K] }[keyof T][];
-
-/**
- * Retrieve an array where each element is a tuple with the key and the type of the key
- */
-export type EntriesWithType<T extends object> = {
-  [K in keyof T]: [K, T[K]];
-}[keyof T][];
+export type Values<T extends object> = T[keyof T];
 
 /**
  * Used to retrieve the simmetric difference of two objects
