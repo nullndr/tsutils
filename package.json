@@ -1,6 +1,6 @@
 {
   "name": "@nullndr/tsutils",
-  "version": "0.0.2",
+  "version": "1.0.0",
   "description": "Some utilities for TypeScript",
   "scripts": {
     "dev": "npx tsc --watch",
@@ -29,9 +29,6 @@
     "ts-jest": "^29.0.1",
     "tsd-lite": "^0.6.0",
     "typescript": "^4.8.3"
-  },
-  "publishConfig": {
-    "@nullndr:registry": "https://registry.npmjs.org/"
   },
   "types": "./lib/index.d.ts",
   "files": [
