@@ -1,4 +1,6 @@
 
+> ⚠️ Deprecated, use [`type-fest`](https://github.com/sindresorhus/type-fest) instead.
+
 # TypeScript utils
 
 This packages contains some `type`s and function utilities for TypeScript.
